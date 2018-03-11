@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form method="post" action="#" th:action="@{/work-list}" th:object="${workHistoryDetails}">
+<table>
+<thead>
+    <tr>
+      <th>
+        <button type="submit" class="btn btn-success" name="addRow" th:text="'Add Row'">Add row</button>
+      </th>
+      <th>Company</th>
+      <th>Country</th>
+    </tr>
+    </thead>
+ <tbody>
+    <tr id='addr_work0' th:each="workRow, rowStat : *{jobs}">
+        <td th:text="${rowStat.index + 1}"></td>
+        <td><input type="text" 
+            placeholder='Company Name'  class="form-control" th:field="*{jobs[__${rowStat.index}__].companyName}"/></td>
+        <td><input type="text" 
+            placeholder='Company city' class="form-control" th:field="*{jobs[__${rowStat.index}__].city}"/></td>
+       
+        
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#myModal'+${rowStat.index}" >Work Sentences</button></td>
+        <td>
+		<!-- The Modal -->
+		<div class="modal fade" th:id="'myModal'+${rowStat.index}">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">Modal Heading</h4>
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		      </div>
+		
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		        <input type="text"
+            placeholder='Company Name'  class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[0]}"/>
+       			<input type="text" 
+            placeholder='Company city' class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[1]}"/>
+           
+		      </div>
+		
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-danger" >Add row</button>
+		      </div>
+		
+		    </div>
+		  </div>
+		</div>
+		</td>
+    </tr>
+ </tbody>
+ </table>
+ 
+      <input type="submit" name="submit" value="Save" class="btn btn-danger" />
+   </form> 
+   
+</body>
+</html>
