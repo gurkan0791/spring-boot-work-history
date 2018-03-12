@@ -44,17 +44,23 @@
 		
 		      <!-- Modal body -->
 		      <div class="modal-body">
-		        <input type="text"
-            placeholder='Company Name'  class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[0]}"/>
-       			<input type="text" 
-            placeholder='Company city' class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[1]}"/>
+<!-- 		        <input type="text" -->
+<!--             placeholder='Company Name'  class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[0]}"/> -->
+<!--        			<input type="text"  -->
+<!--             placeholder='Company city' class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[1]}"/> -->
+              
+               <div th:each="workRow1, row : *{jobs[__${rowStat.index}__].workDoneSentences}">
+                 <input type="text" 
+                     placeholder='Work Description' class="form-control" th:field="*{jobs[__${rowStat.index}__].workDoneSentences[__${row.index}__]}" th:value="${workRow1}"/>
+               </div>
+              
            
 		      </div>
 		
 		      <!-- Modal footer -->
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-danger" >Add row</button>
+		        <button type="button" class="btn btn-danger js-add-row" th:attr="data-row=${rowStat.index}" th:id="'row-btn'+${rowStat.index}" >Add row</button>
 		      </div>
 		
 		    </div>
@@ -67,6 +73,21 @@
  
       <input type="submit" name="submit" value="Save" class="btn btn-danger" />
    </form> 
-   
+   <script>
+   $(document).ready(function(){
+	   $(".modal-footer").on('click','.js-add-row',function(event){
+		   var id = $(event.target).data('row');
+		   var a = $('#myModal'+id+ ' .modal-body div').length;
+		   var rowId = "jobs"+id+".workDoneSentences"+a;
+		   var rowName = "jobs["+id+"].workDoneSentences["+a+"]";
+		   var html = [];
+	        html.push(
+	          '<div><input type="text" class="form-control" placeholder="Work Description" id="'+rowId+'" name="'+rowName+'" /></div>',
+	       );
+	       var b = html.join("");
+	       $('#myModal'+id+ ' .modal-body div:last').after(b);
+	   });
+   })
+   </script>
 </body>
 </html>
